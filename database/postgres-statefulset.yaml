@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sms-postgres
+  namespace: sms
+  labels:
+    app: sms-postgres
+spec:
+  serviceName: sms-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sms-postgres
+  template:
+    metadata:
+      labels:
+        app: sms-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: smsdb
+            - name: POSTGRES_USER
+              value: smsuser
+            - name: POSTGRES_PASSWORD
+              value: smspassword
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+          
