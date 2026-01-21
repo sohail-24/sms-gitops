@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: sms-backend
-          image: sohail28/sms-backend:v1
+          image: sohail28/sms-backend:v2
           ports:
             - containerPort: 8000
               name: http
